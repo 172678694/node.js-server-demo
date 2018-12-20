@@ -32,8 +32,21 @@ var server = http.createServer(function(request, response){
 
 
   console.log('方方说：得到 HTTP 路径\n' + path)
-  if(path == '/'){
-	  response.write('Hi\n')
+  if(path == '/style'){
+	  response.setHeader('Content-type','text/css; charset=utf-8')
+	  response.write('body{background-color:#ddd;}h1{color:red;}')
+	  response.end()
+  }else if(path == '/script'){
+	  response.setHeader('Content-type','text/javascript; charset=utf-8')
+	  response.write('alert("这是js执行的")')
+	  response.end()
+  }else if(path == '/index'){
+	  response.setHeader('Content-type','text/html; charset=utf-8')
+	  response.write('<!DOCTYPE>\n<html>' + 
+		  '<head><link rel="stylesheet" href="/style"></head>' +
+		  '<body><h1>Hello, Node.js你好</h1>' +
+		  '<script src="/script"></script>' + 
+		  '</body></html>')
 	  response.end()
   }else{
 	  response.statusCode = 404
