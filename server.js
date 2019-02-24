@@ -25,37 +25,21 @@ var server = http.createServer(function(request, response){
 
 
 
-
-
-
-
-
-
-  console.log('方方说：得到 HTTP 路径\n' + path)
-  if(path == '/style'){
-	  response.setHeader('Content-type','text/css; charset=utf-8')
-	  response.write('body{background-color:#ddd;}h1{color:red;}')
-	  response.end()
-  }else if(path == '/script'){
-	  response.setHeader('Content-type','text/javascript; charset=utf-8')
-	  response.write('alert("这是js执行的")')
-	  response.end()
-  }else if(path == '/index'){
-	  response.setHeader('Content-type','text/html; charset=utf-8')
-	  response.write('<!DOCTYPE>\n<html>' + 
-		  '<head><link rel="stylesheet" href="/style"></head>' +
-		  '<body><h1>Hello, Node.js你好</h1>' +
-		  '<script src="/script"></script>' + 
-		  '</body></html>')
-	  response.end()
+  if(path === '/pay'){
+    var amount=fs.readFileSync('./db','utf8')
+    var newAmount=amount-1
+    fs.writeFileSync('newAmount','./db')
+    let callbackName=query.callback
+    response.statusCode = 200  // 设置响应第一部分
+    response.setHeader('Content-Type', 'text/javascript') // 设置响应第二部分
+    response.write(`$(callbackName).call(undefined,'success')`)  // 设置响应第四部分   
+    response.end()
   }else{
-	  response.statusCode = 404
-	  response.end()
+    response.statusCode = 404
+    response.setHeader('Content-Type', 'text/html;charset=utf-8')
+    response.write('呜呜呜')
+    response.end()
   }
-  
-
-
-
 
 
 
